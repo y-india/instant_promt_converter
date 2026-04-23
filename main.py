@@ -1,9 +1,10 @@
-import keyboard
 import pyperclip
+import keyboard
 import time
 from groq import Groq
 
 client = Groq(api_key="")
+
 
 def improve_prompt(text):
     instruction = f"""
@@ -18,7 +19,7 @@ Strict rules:
 - Do NOT change the intent
 - Only improve wording, structure, and specificity
 - Keep it suitable for a coder or corporate professional
-- Limit response to 5times the prompt words
+- Limit response to 5 times the prompt words
 
 User prompt:
 {text}
@@ -33,12 +34,10 @@ User prompt:
 
 
 def process_selection():
-    keyboard.press_and_release("ctrl+c")
-    time.sleep(0.3)
-
     text = pyperclip.paste()
+
     if not text.strip():
-        print("No text selected")
+        print("Clipboard is empty. First press Ctrl+C on selected text, then use shortcut.")
         return
 
     improved = improve_prompt(text)
@@ -52,6 +51,8 @@ def process_selection():
 
 keyboard.add_hotkey("ctrl+alt+space", process_selection)
 
-print("Running... Press ctrl+alt+space")
-keyboard.wait()
+print("Running...")
+print("Step 1: Select text and press Ctrl+C")
+print("Step 2: Press ctrl+alt+space")
 
+keyboard.wait()
