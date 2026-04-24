@@ -14,15 +14,12 @@ chrome.commands.onCommand.addListener(async (command) => {
   });
 
   const text = result?.[0]?.result;
-
   if (!text) return;
 
-  const dataUrl =
-    "data:text/plain;charset=utf-8," + encodeURIComponent(text + "\n");
-
-  chrome.downloads.download({
-    url: dataUrl,
-    filename: "D:\\coding\\promt_project\\chrome-selected-saver\\selected_text.txt",
-    saveAs: false
-  });
+  // send to Python
+  fetch("http://127.0.0.1:5000/process", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ text })
+  }).catch(err => console.error(err));
 });
