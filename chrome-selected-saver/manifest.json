@@ -1,15 +1,17 @@
 {
   "manifest_version": 3,
   "name": "Selected Text Saver",
-  "version": "1.0",
-  "permissions": ["downloads", "activeTab", "scripting"],
+  "version": "1.1",
+  "permissions": ["activeTab", "scripting", "downloads"],
   "background": {
     "service_worker": "background.js"
   },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+  "commands": {
+    "save-selection": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Space"
+      },
+      "description": "Save selected text"
     }
-  ]
+  }
 }

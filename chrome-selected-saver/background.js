@@ -1,14 +1,28 @@
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === "SELECTED_TEXT") {
-    const text = message.text;
+chrome.commands.onCommand.addListener(async (command) => {
+  if (command !== "save-selection") return;
 
-    const blob = new Blob([text], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
+  const [tab] = await chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  });
 
-    chrome.downloads.download({
-      url: url,
-      filename: "from_chrome.txt",
-      saveAs: false
-    });
-  }
+  if (!tab?.id) return;
+
+  const result = await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: () => window.getSelection().toString().trim()
+  });
+
+  const text = result?.[0]?.result;
+
+  if (!text) return;
+
+  const dataUrl =
+    "data:text/plain;charset=utf-8," + encodeURIComponent(text + "\n");
+
+  chrome.downloads.download({
+    url: dataUrl,
+    filename: "from_chrome.txt",
+    saveAs: false
+  });
 });
