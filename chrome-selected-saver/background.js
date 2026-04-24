@@ -22,7 +22,7 @@ chrome.commands.onCommand.addListener(async (command) => {
 
   chrome.downloads.download({
     url: dataUrl,
-    filename: "from_chrome.txt",
+    filename: "D:\\coding\\promt_project\\chrome-selected-saver\\selected_text.txt",
     saveAs: false
   });
 });
