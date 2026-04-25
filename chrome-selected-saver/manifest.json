@@ -2,16 +2,27 @@
   "manifest_version": 3,
   "name": "Selected Text Saver",
   "version": "1.1",
-  "permissions": ["activeTab", "scripting", "downloads"],
+
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "clipboardWrite"
+  ],
+
+  "host_permissions": [
+    "http://127.0.0.1:5000/*"
+  ],
+
   "background": {
     "service_worker": "background.js"
   },
+
   "commands": {
     "save-selection": {
       "suggested_key": {
         "default": "Ctrl+Shift+Space"
       },
-      "description": "Save selected text"
+      "description": "Improve selected text"
     }
   }
 }
