@@ -55,12 +55,6 @@ chrome.commands.onCommand.addListener(async (command) => {
     await chrome.scripting.executeScript({
       target: { tabId: tab.id },
       args: [text, improvedText],
-      func: (original, improved) => {
-
-        // Remove old popup if exists
-        const old = document.getElementById("prompt-popup");
-        if (old) old.remove();
-
         const container = document.createElement("div");
         container.id = "prompt-popup";
 
@@ -80,17 +74,11 @@ chrome.commands.onCommand.addListener(async (command) => {
           <div style="margin-bottom:6px;"><b>Improved Prompt</b></div>
 
           <div style="opacity:0.6; margin-bottom:4px;">Original:</div>
-          <div style="margin-bottom:8px;">${original}</div>
-
-          <div style="opacity:0.6; margin-bottom:4px;">Improved:</div>
-          <div style="margin-bottom:10px;">${improved}</div>
+          <div style="mar">${improved}</div>
 
           <button id="copy-btn" style="
             padding:6px 10px;
-            background:#4CAF50;
-            color:white;
-            border:none;
-            border-radius:4px;
+            back=:4px;
             cursor:pointer;
             margin-right:6px;
           ">Copy</button>
@@ -99,11 +87,6 @@ chrome.commands.onCommand.addListener(async (command) => {
             padding:6px 10px;
             background:#2196F3;
             color:white;
-            border:none;
-            border-radius:4px;
-            cursor:pointer;
-            margin-right:6px;
-          ">Replace</button>
 
           <button id="close-btn" style="
             padding:6px 10px;
@@ -113,12 +96,7 @@ chrome.commands.onCommand.addListener(async (command) => {
             border-radius:4px;
             cursor:pointer;
           ">Close</button>
-        `;
-
-        document.body.appendChild(container);
-
-        // COPY
-        document.getElementById("copy-btn").onclick = async () => {
+        `;        document.getElementById("copy-btn").onclick = async () => {
           await navigator.clipboard.writeText(improved);
           container.remove();
         };
@@ -151,21 +129,6 @@ chrome.commands.onCommand.addListener(async (command) => {
             return;
           }
 
-          // CONTENTEDITABLE (ChatGPT etc.)
-          if (el.isContentEditable) {
-            try {
-              document.execCommand("insertText", false, improved);
-              container.remove();
-              return;
-            } catch (e) {}
-          }
-
-          // FALLBACK → copy
-          navigator.clipboard.writeText(improved);
-          alert("Replace failed. Text copied. Press Ctrl+V.");
-
-          container.remove();
-        };
 
         // CLOSE
         document.getElementById("close-btn").onclick = () => {
